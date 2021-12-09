@@ -19,6 +19,7 @@ module.exports = {
           },
         },
       },
+      { test: /\.css$/, use: "css-loader" },
     ],
   },
   plugins: [
@@ -27,7 +28,7 @@ module.exports = {
       filename: "popup.html",
     }),
     new CopyPlugin({
-      patterns: [{ from: "public" }],
+      patterns: [{ from: "public" }, { from: "./src/style.css" }],
     }),
   ],
 };

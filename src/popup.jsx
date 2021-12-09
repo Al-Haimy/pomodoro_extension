@@ -1,11 +1,5 @@
 import React from "react";
 import { render } from "react-dom";
-
-function Popup() {
-  return (
-    <div>
-      <h1>Hello world</h1>
-    </div>
-  );
-}
+import Popup from "./components/Popup";
+import "./style.css";
 render(<Popup />, document.getElementById("popup"));
