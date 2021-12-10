@@ -6,12 +6,15 @@ let counter = 0;
 const POMODORO = "POMODORO";
 const LONG_BREAK = "LONG BREAK";
 const SHORT_BREAK = "SHORT BREAK";
-const POMO_TIME = 1 * 60;
-const LONG_TIME = 1 * 60;
-const SHORT_TIME = 1 * 60;
+const POMO_TIME = 25 * 60;
+const LONG_TIME = 15 * 60;
+const SHORT_TIME = 5 * 60;
 const RUNNING = true;
 const STOPPED = false;
 let lifeline;
+
+const audio = new Audio("./alarm.mp3");
+audio.play();
 
 const tick = () => {
   if (countDown > 0) {
@@ -95,6 +98,7 @@ chrome.runtime.onConnect.addListener(function (port) {
           break;
       }
     }
+
     port.postMessage({
       time: countDown,
       section: type,
