@@ -1,7 +1,8 @@
 import React from "react";
+import MainBody from "./MainBody";
 
 const Options = () => {
-  return <div>Hellow world</div>;
+  return <MainBody />;
 };
 
 export default Options;

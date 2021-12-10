@@ -16,9 +16,9 @@ const timeShow = (time) => {
 };
 
 const Main = () => {
-  const [displayText, setDisplayText] = useState("");
-  const [btnText, setBtnText] = useState("");
-  const [timeDisplay, setTimeDisplay] = useState("");
+  const [displayText, setDisplayText] = useState("Loading...");
+  const [btnText, setBtnText] = useState("Loading...");
+  const [timeDisplay, setTimeDisplay] = useState("Loading...");
 
   var port = chrome.runtime.connect({ name: "hi" });
 
