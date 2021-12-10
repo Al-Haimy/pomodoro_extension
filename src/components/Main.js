@@ -16,13 +16,16 @@ const timeShow = (time) => {
 };
 
 const Main = () => {
-  const [displayText, setDisplayText] = useState("POMODORO");
-  const [btnText, setBtnText] = useState("start");
-  const [timeDisplay, setTimeDisplay] = useState("25:00");
+  const [displayText, setDisplayText] = useState("");
+  const [btnText, setBtnText] = useState("");
+  const [timeDisplay, setTimeDisplay] = useState("");
+
+  var port = chrome.runtime.connect({ name: "hi" });
 
   useEffect(() => {
     setInterval(() => {
-      chrome.runtime.sendMessage({ msg: "hi" }, (res) => {
+      port.postMessage({ msg: "hi" });
+      port.onMessage.addListener(function (res) {
         setDisplayText(res.section);
         setTimeDisplay(timeShow(res.time));
         !res.status ? setBtnText("start") : setBtnText("stop");
@@ -33,13 +36,15 @@ const Main = () => {
 
   const mainBtn = () => {
     if (btnText == "start") {
-      chrome.runtime.sendMessage({ action: true }, (res) => {
+      port.postMessage({ action: true });
+      port.onMessage.addListener((res) => {
         setDisplayText(res.section);
         setTimeDisplay(timeShow(res.time));
         !res.status ? setBtnText("start") : setBtnText("stop");
       });
     } else {
-      chrome.runtime.sendMessage({ action: false }, (res) => {
+      port.postMessage({ action: false });
+      port.onMessage.addListener((res) => {
         setDisplayText(res.section);
         setTimeDisplay(timeShow(res.time));
         !res.status ? setBtnText("start") : setBtnText("stop");
@@ -49,7 +54,8 @@ const Main = () => {
   };
 
   const changeType = (e) => {
-    chrome.runtime.sendMessage({ section: parseInt(e.target.id) }, (res) => {
+    port.postMessage({ section: parseInt(e.target.id) });
+    port.onMessage.addListener((res) => {
       setDisplayText(res.section);
       setTimeDisplay(timeShow(res.time));
       !res.status ? setBtnText("start") : setBtnText("stop");

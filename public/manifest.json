@@ -9,7 +9,7 @@
         "48": "./logo-48.png",
         "128": "./logo-128.png"
     },
-    "permissions": ["scripting"],
+    "permissions": ["scripting",  "notifications", "alarms"],
     "host_permissions": ["<all_urls>"],
     "background": {
         "service_worker": "background.js"
