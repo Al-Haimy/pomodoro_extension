@@ -4,7 +4,9 @@ import Display from "./Display";
 import Btn from "./Btn";
 import Grid from "@mui/material/Grid";
 import { useState, useEffect } from "react";
+
 let timeLift;
+// function to show the times in minutes and secounds
 const timeShow = (time) => {
   let minutes = parseInt(time / 60) % 60;
   let seconds = time % 60;
@@ -21,7 +23,10 @@ const Main = () => {
   const [timeDisplay, setTimeDisplay] = useState("Loading...");
 
   var port = chrome.runtime.connect({ name: "hi" });
-
+  /*
+    fetching data each one secounds from background js
+    and using chrome long live port messaging to get long connection and keep the connection alive  
+  */
   useEffect(() => {
     setInterval(() => {
       port.postMessage({ msg: "hi" });
@@ -34,6 +39,10 @@ const Main = () => {
     }, 1000);
   }, []);
 
+  /*
+    function for the start button it meant to send request to the 
+    background js and resive response and also change the text on the button
+  */
   const mainBtn = () => {
     if (btnText == "start") {
       port.postMessage({ action: true });
@@ -50,9 +59,13 @@ const Main = () => {
         !res.status ? setBtnText("start") : setBtnText("stop");
       });
     }
-    console.log("button was clicked");
   };
 
+  /*
+    function for the head buttons. 
+    it takes the object of clicked button and send the object id
+    in the backgournd js will treat the id digit as type number.
+  */
   const changeType = (e) => {
     port.postMessage({ section: parseInt(e.target.id) });
     port.onMessage.addListener((res) => {
