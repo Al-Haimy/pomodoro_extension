@@ -27,7 +27,7 @@ const tick = () => {
       message: type + " IS DONE!",
       priority: 0,
     });
-    const audio = new Audio("./alarm.mp3");
+    const audio = new Audio("./alarm.wav");
     audio.play();
     stopPomodoro();
     isRunning = STOPPED;

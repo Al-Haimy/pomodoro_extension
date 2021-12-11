@@ -44,6 +44,8 @@ const Main = () => {
     background js and resive response and also change the text on the button
   */
   const mainBtn = () => {
+    const audio = new Audio("./startBtn.wav");
+    audio.play();
     if (btnText == "start") {
       port.postMessage({ action: true });
       port.onMessage.addListener((res) => {
