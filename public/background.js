@@ -14,6 +14,7 @@ let counter = 0;
 let lifeline;
 let typeDigit = 1;
 
+// count down function.
 const tick = () => {
   if (countDown > 0) {
     countDown--;
@@ -33,12 +34,14 @@ const tick = () => {
   }
 };
 
+// function to set the alarm
 const setAlarmConfig = () => {
   chrome.alarms.create("POMODORO", {
     periodInMinutes: parseInt(countDown / 60) % 60,
   });
 };
 
+// Alarm triger listener to execute a function when ever the alarm is executed
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === "POMODORO") {
     chrome.notifications.create("pomodoro", {
@@ -53,19 +56,24 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   }
 });
 
+// start function that to start the pomodoro
 const startPomodoro = () => {
-  interval = setInterval(tick, 10);
   if (countDown >= 60) {
     setAlarmConfig();
+  } else if (countDown == 0) {
+    setTypeDuration(typeDigit);
   }
+  interval = setInterval(tick, 10);
 };
 
+// stop function to stop the pomodoro timer
 const stopPomodoro = () => {
   clearInterval(interval);
   interval = null;
   chrome.alarms.clear("POMODORO", function () {});
 };
 
+// long live message google chrome api
 chrome.runtime.onConnect.addListener(function (port) {
   console.log(port.name);
 
@@ -73,6 +81,7 @@ chrome.runtime.onConnect.addListener(function (port) {
     if (typeof msg.section != "undefined") {
       isRunning = STOPPED;
       typeDigit = msg.section;
+      setTypeDuration(typeDigit);
     }
     if (typeof msg.action != "undefined") {
       switch (msg.action) {
@@ -100,23 +109,26 @@ chrome.runtime.onConnect.addListener(function (port) {
   });
 });
 
+// function to add badge
 const badge = () => {
   chrome.browserAction.setBadgeBackgroundColor({ color: "#F00" }, () => {
     chrome.browserAction.setBadgeText({ text: timeShow() });
   });
 };
 
+//function to remove the badge when the minutes is 0
 const quiet = () => {
   chrome.browserAction.setBadgeText({});
 };
 
+//function to show the minutes for hte badge
 const timeShow = () => {
   let minutes = parseInt(countDown / 60) % 60;
-  let seconds = countDown % 60;
   let timeLift = minutes < 10 ? "0" + minutes : "" + minutes;
   return timeLift;
 };
 
+// adding the type of the pomodoro and the duration
 const setTypeDuration = (typeName) => {
   switch (typeName) {
     case 1:
