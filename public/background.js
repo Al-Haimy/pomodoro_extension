@@ -13,9 +13,6 @@ const RUNNING = true;
 const STOPPED = false;
 let lifeline;
 
-const audio = new Audio("./alarm.mp3");
-audio.play();
-
 const tick = () => {
   if (countDown > 0) {
     countDown--;
@@ -41,6 +38,8 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       message: "You are awesome!",
       priority: 1,
     });
+    const audio = new Audio("./alarm.mp3");
+    audio.play();
   }
 });
 
@@ -98,6 +97,7 @@ chrome.runtime.onConnect.addListener(function (port) {
           break;
       }
     }
+    chrome.browserAction.setBadgeText({ text: "grr" });
 
     port.postMessage({
       time: countDown,
