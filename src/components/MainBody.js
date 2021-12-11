@@ -1,18 +1,12 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import OptionHeader from "./Optionheader";
+
+import OptionHeader from "./OptionHeader";
 
 const MainBody = () => {
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: "blue",
-      }}
-    >
+    <div className="options_back">
       <OptionHeader />
-    </Box>
+    </div>
   );
 };
 

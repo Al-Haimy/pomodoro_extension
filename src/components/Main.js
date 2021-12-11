@@ -17,6 +17,13 @@ const timeShow = (time) => {
   return timeLift;
 };
 
+// sound function
+
+const sound = () => {
+  const audio = new Audio("./startBtn.wav");
+  audio.play();
+};
+
 const Main = () => {
   const [displayText, setDisplayText] = useState("Loading...");
   const [btnText, setBtnText] = useState("Loading...");
@@ -44,8 +51,7 @@ const Main = () => {
     background js and resive response and also change the text on the button
   */
   const mainBtn = () => {
-    const audio = new Audio("./startBtn.wav");
-    audio.play();
+    sound();
     if (btnText == "start") {
       port.postMessage({ action: true });
       port.onMessage.addListener((res) => {
@@ -69,6 +75,7 @@ const Main = () => {
     in the backgournd js will treat the id digit as type number.
   */
   const changeType = (e) => {
+    sound();
     port.postMessage({ section: parseInt(e.target.id) });
     port.onMessage.addListener((res) => {
       setDisplayText(res.section);
