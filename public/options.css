@@ -1,12 +1,22 @@
-body {
-  padding: 0;
-  margin: 0;
+@font-face {
+  font-family: "roboto-thin";
+  src: url("Roboto-Thin.ttf");
 }
+@font-face {
+  font-family: "roboto-Light";
+  src: url("Roboto-Light.ttf");
+}
+@font-face {
+  font-family: "roboto-Medium";
+  src: url("Roboto-Medium.ttf");
+}
+
 body {
   padding: 0;
   margin: 0;
   width: 100%;
   background-color: #b91646;
 }
-.options_back {
+h2 {
+  font-family: "roboto-Medium";
 }
