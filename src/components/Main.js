@@ -32,7 +32,7 @@ const Main = () => {
         console.log(res.time);
       });
     }, 1000);
-  }, [timeDisplay]);
+  }, []);
 
   const mainBtn = () => {
     if (btnText == "start") {
