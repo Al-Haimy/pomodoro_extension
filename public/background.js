@@ -1,9 +1,9 @@
 const POMODORO = "POMODORO";
 const LONG_BREAK = "LONG BREAK";
 const SHORT_BREAK = "SHORT BREAK";
-const POMO_TIME = 25 * 60;
-const LONG_TIME = 15 * 60;
-const SHORT_TIME = 5 * 60;
+let pomoTime = 25 * 60;
+let longTime = 15 * 60;
+let shortTime = 5 * 60;
 const RUNNING = true;
 const STOPPED = false;
 let type = "POMODORO";
@@ -13,6 +13,30 @@ let interval = null;
 let counter = 0;
 let lifeline;
 let typeDigit = 1;
+let Alarm = true;
+let Notifications = true;
+let Button = true;
+
+const setDefaultSettings = () => {
+  chrome.storage.sync.set({
+    isAlarm: Alarm,
+    isNotification: Notifications,
+    pomodoro: pomoTime,
+    short: shortTime,
+    long: longTime,
+  });
+};
+
+chrome.storage.sync.get(
+  ["isAlarm", "isNotification", "isButton", "pomodoro", "short", "long"],
+  (settings) => {
+    if (typeof settings.isAlarm == "undefined") {
+      setDefaultSettings();
+    } else {
+      console.log(settings.isNotification);
+    }
+  }
+);
 
 // count down function.
 const tick = () => {
@@ -20,15 +44,15 @@ const tick = () => {
     countDown--;
   }
   if (countDown == 0) {
-    chrome.notifications.create("pomodoro", {
-      type: "basic",
-      iconUrl: "logo-128.png",
-      title: "POMODORO TIMER",
-      message: type + " IS DONE!",
-      priority: 0,
-    });
-    const audio = new Audio("./alarm.wav");
-    audio.play();
+    // chrome.notifications.create("pomodoro", {
+    //   type: "basic",
+    //   iconUrl: "logo-128.png",
+    //   title: "POMODORO TIMER",
+    //   message: type + " IS DONE!",
+    //   priority: 0,
+    // });
+    // const audio = new Audio("./alarm.wav");
+    // audio.play();
     stopPomodoro();
     isRunning = STOPPED;
   }
@@ -51,7 +75,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       message: type + " IS DONE!",
       priority: 0,
     });
-    const audio = new Audio("./alarm.mp3");
+    const audio = new Audio("./alarm.wav");
     audio.play();
   }
 });
@@ -63,7 +87,7 @@ const startPomodoro = () => {
   } else if (countDown == 0) {
     setTypeDuration(typeDigit);
   }
-  interval = setInterval(tick, 10);
+  interval = setInterval(tick, 1000);
 };
 
 // stop function to stop the pomodoro timer
@@ -134,21 +158,21 @@ const setTypeDuration = (typeName) => {
     case 1:
       stopPomodoro();
       type = POMODORO;
-      countDown = POMO_TIME;
+      countDown = pomoTime;
       break;
     case 2:
       stopPomodoro();
       type = SHORT_BREAK;
-      countDown = SHORT_TIME;
+      countDown = shortTime;
       break;
     case 3:
       stopPomodoro();
       type = LONG_BREAK;
-      countDown = LONG_TIME;
+      countDown = longTime;
       break;
     default:
       type = POMODORO;
-      countDown = POMO_TIME;
+      countDown = pomoTime;
 
       break;
   }

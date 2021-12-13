@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { pink } from "@mui/material/colors";
+import { useState } from "react";
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(pink[500]),
   backgroundColor: pink[500],
@@ -19,6 +20,25 @@ const ColorButton = styled(Button)(({ theme }) => ({
 }));
 
 const Settings = () => {
+  const [stng, setStng] = useState({
+    alarm: "",
+    notifi: "",
+    btnSound: "",
+    pomo: "",
+    short: "",
+    long: "",
+  });
+  chrome.storage.sync.get(
+    ["isAlarm", "isNotification", "isButton", "pomodoro", "short", "long"],
+    (settings) => {
+      console.log(settings);
+    }
+  );
+  const handleChange = (e) => {
+    console.log(e.target.id);
+    console.log(e.target.value);
+  };
+
   return (
     <Container
       sx={{
@@ -43,7 +63,7 @@ const Settings = () => {
             SETTINGS
           </Typography>
         </Grid>
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <Container
             sx={{
               backgroundColor: "#FBF3E4",
@@ -59,13 +79,25 @@ const Settings = () => {
               alignItems="center"
             >
               <Grid item xs={12}>
-                <SwitchBtn labelText="Alarm sound" />
+                <SwitchBtn
+                  onId="alarm"
+                  checkValue={handleChange}
+                  labelText="Alarm sound"
+                />
               </Grid>
               <Grid item xs={12}>
-                <SwitchBtn labelText="Buttons Sound" />
+                <SwitchBtn
+                  onId="btnSound"
+                  checkValue={handleChange}
+                  labelText="Buttons Sound"
+                />
               </Grid>
               <Grid item xs={12}>
-                <SwitchBtn labelText="Notification " />
+                <SwitchBtn
+                  onId="notification"
+                  checkValue={handleChange}
+                  labelText="Notification "
+                />
               </Grid>
 
               <Grid item xs={12}>

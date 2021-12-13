@@ -19,8 +19,8 @@ const GreenSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 const label = { inputProps: { "aria-label": "Switch demo" } };
-const SwitchBtn = ({ labelText }) => {
-  const [isChecked, setIsChecked] = useState(true);
+const SwitchBtn = ({ labelText, onId }) => {
+  const [isChecked, setIsChecked, checkValue] = useState(true);
 
   const switchClick = () => {
     setIsChecked(!isChecked);
@@ -43,7 +43,13 @@ const SwitchBtn = ({ labelText }) => {
       <Grid item xs={2}>
         <Stack direction="row" spacing={0} alignItems="center">
           <Typography>OFF</Typography>
-          <GreenSwitch {...label} onClick={switchClick} checked={isChecked} />
+          <GreenSwitch
+            {...label}
+            onClick={switchClick}
+            id={onId}
+            checked={isChecked}
+            onChange={checkValue}
+          />
           <Typography>ON</Typography>
         </Stack>
       </Grid>
