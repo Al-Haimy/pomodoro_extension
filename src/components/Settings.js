@@ -8,7 +8,7 @@ import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { pink } from "@mui/material/colors";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(pink[500]),
   backgroundColor: pink[500],
@@ -19,24 +19,77 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+const changeToMinutes = (secounds) => {
+  let minutes = parseInt(secounds / 60) % 60;
+  return minutes;
+};
+const changeToSecounds = (minutes) => {
+  let secounds = parseInt(minutes) * 60;
+  return secounds;
+};
+
 const Settings = () => {
-  const [stng, setStng] = useState({
-    alarm: "",
-    notifi: "",
-    btnSound: "",
-    pomo: "",
-    short: "",
-    long: "",
-  });
+  const [alarmSound, setAlarmSound] = useState(true);
+  const [notification, setNotification] = useState(true);
+  const [btnSound, setBtnSound] = useState(true);
+  const [pomoTime, setPomoTime] = useState(0);
+  const [shortTime, setShortTime] = useState(0);
+  const [longTime, setLongTime] = useState(0);
+
+  const setDefaultSettings = (stng) => {
+    setAlarmSound(stng.isAlarm);
+  };
   chrome.storage.sync.get(
     ["isAlarm", "isNotification", "isButton", "pomodoro", "short", "long"],
     (settings) => {
-      console.log(settings);
+      setAlarmSound(settings.isAlarm);
+      setNotification(settings.isNotification);
+      setBtnSound(settings.isButton);
+      setPomoTime(changeToMinutes(settings.pomodoro));
+      setShortTime(changeToMinutes(settings.short));
+      setLongTime(changeToMinutes(settings.long));
     }
   );
-  const handleChange = (e) => {
-    console.log(e.target.id);
-    console.log(e.target.value);
+
+  const ontimeChange = (time, id) => {
+    let seconds;
+    seconds = changeToSecounds(time);
+    if (id === "pomoTime") {
+      chrome.storage.sync.set({
+        pomodoro: seconds,
+      });
+      setPomoTime(time);
+    } else if (id === "long") {
+      chrome.storage.sync.set({
+        long: seconds,
+      });
+      setLongTime(time);
+    } else if (id === "short") {
+      chrome.storage.sync.set({
+        short: seconds,
+      });
+      setShortTime(time);
+    }
+    console.log(id);
+  };
+
+  const handleChange = (state, id) => {
+    if (id === "alarm") {
+      chrome.storage.sync.set({
+        isAlarm: !alarmSound,
+      });
+      setAlarmSound(!alarmSound);
+    } else if (id === "btnSound") {
+      chrome.storage.sync.set({
+        isButton: !btnSound,
+      });
+      setBtnSound(!btnSound);
+    } else if (id === "notification") {
+      chrome.storage.sync.set({
+        isNotification: !notification,
+      });
+      setNotification(!notification);
+    }
   };
 
   return (
@@ -81,36 +134,67 @@ const Settings = () => {
               <Grid item xs={12}>
                 <SwitchBtn
                   onId="alarm"
-                  checkValue={handleChange}
+                  isChecked={alarmSound}
                   labelText="Alarm sound"
+                  changeHandler={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <SwitchBtn
                   onId="btnSound"
-                  checkValue={handleChange}
+                  isChecked={btnSound}
                   labelText="Buttons Sound"
+                  changeHandler={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <SwitchBtn
                   onId="notification"
-                  checkValue={handleChange}
+                  isChecked={notification}
                   labelText="Notification "
+                  changeHandler={handleChange}
                 />
               </Grid>
 
               <Grid item xs={12}>
-                <InputFiled labelText="Pomodoro" />
+                {pomoTime ? (
+                  <InputFiled
+                    valueMinutes={pomoTime}
+                    handleChange={ontimeChange}
+                    inputId="pomoTime"
+                    labelText="Pomodoro"
+                  />
+                ) : (
+                  <></>
+                )}
               </Grid>
               <Grid item xs={12}>
-                <InputFiled labelText="Short break" />
+                {shortTime ? (
+                  <InputFiled
+                    valueMinutes={shortTime}
+                    labelText="Short break"
+                    handleChange={ontimeChange}
+                    inputId="short"
+                  />
+                ) : (
+                  <></>
+                )}
               </Grid>
               <Grid item xs={12}>
-                <InputFiled labelText="Long break" />
+                {longTime ? (
+                  <InputFiled
+                    valueMinutes={longTime}
+                    handleChange={ontimeChange}
+                    inputId="long"
+                    labelText="Long break"
+                  />
+                ) : (
+                  <></>
+                )}
               </Grid>
+
               <Grid item>
-                <ColorButton size="large" variant="contained">
+                <ColorButton size="medium" variant="contained">
                   Submit
                 </ColorButton>
               </Grid>

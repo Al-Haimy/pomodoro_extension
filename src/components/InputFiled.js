@@ -2,8 +2,11 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import { useState } from "react";
 
-const InputFiled = ({ labelText }) => {
+const InputFiled = ({ labelText, valueMinutes, handleChange, inputId }) => {
+  const [newValue, setNewValue] = useState(valueMinutes);
+
   return (
     <Grid
       container
@@ -30,7 +33,11 @@ const InputFiled = ({ labelText }) => {
           sx={{
             width: 70,
           }}
-          defaultValue={40}
+          defaultValue={newValue}
+          onChange={(e) => {
+            setNewValue(e.target.value);
+            handleChange(e.target.value, inputId);
+          }}
         />
       </Grid>
     </Grid>

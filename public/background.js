@@ -14,13 +14,14 @@ let counter = 0;
 let lifeline;
 let typeDigit = 1;
 let Alarm = true;
-let Notifications = true;
-let Button = true;
+let Notifications = false;
+let btnSound = true;
 
 const setDefaultSettings = () => {
   chrome.storage.sync.set({
     isAlarm: Alarm,
     isNotification: Notifications,
+    isButton: btnSound,
     pomodoro: pomoTime,
     short: shortTime,
     long: longTime,

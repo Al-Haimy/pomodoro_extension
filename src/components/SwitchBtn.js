@@ -19,11 +19,10 @@ const GreenSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 const label = { inputProps: { "aria-label": "Switch demo" } };
-const SwitchBtn = ({ labelText, onId }) => {
-  const [isChecked, setIsChecked, checkValue] = useState(true);
 
+const SwitchBtn = ({ labelText, onId, isChecked, changeHandler }) => {
   const switchClick = () => {
-    setIsChecked(!isChecked);
+    changeHandler(isChecked, onId);
   };
 
   return (
@@ -48,7 +47,6 @@ const SwitchBtn = ({ labelText, onId }) => {
             onClick={switchClick}
             id={onId}
             checked={isChecked}
-            onChange={checkValue}
           />
           <Typography>ON</Typography>
         </Stack>
