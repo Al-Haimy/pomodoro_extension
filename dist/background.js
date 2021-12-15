@@ -15,7 +15,6 @@ let lifeline;
 let typeDigit = 1;
 let Alarm = true;
 let Notifications = false;
-let btnSound = true;
 
 const setDefaultSettings = () => {
   chrome.storage.sync.set({
@@ -34,10 +33,40 @@ chrome.storage.sync.get(
     if (typeof settings.isAlarm == "undefined") {
       setDefaultSettings();
     } else {
-      console.log(settings.isNotification);
+      pomoTime = settings.pomodoro;
+      shortTime = settings.short;
+      longTime = settings.long;
+      Alarm = settings.isAlarm;
+      Notifications = settings.isNotification;
+      setTypeDuration(typeDigit);
     }
   }
 );
+
+chrome.storage.onChanged.addListener(function (settings) {
+  if (settings.pomodoro) {
+    pomoTime = settings.pomodoro.newValue;
+    console.log(typeof settings.pomodoro.newValue);
+    stopPomodoro();
+    setTypeDuration(typeDigit);
+  }
+  if (settings.short) {
+    shortTime = settings.short.newValue;
+    stopPomodoro();
+    setTypeDuration(typeDigit);
+  }
+  if (settings.long) {
+    longTime = settings.long.newValue;
+    stopPomodoro();
+    setTypeDuration(typeDigit);
+  }
+  if (settings.isAlarm) {
+    Alarm = settings.isAlarm.newValue;
+  }
+  if (settings.isNotification) {
+    Notifications = settings.isNotification.newValue;
+  }
+});
 
 // count down function.
 const tick = () => {
@@ -45,17 +74,7 @@ const tick = () => {
     countDown--;
   }
   if (countDown == 0) {
-    // chrome.notifications.create("pomodoro", {
-    //   type: "basic",
-    //   iconUrl: "logo-128.png",
-    //   title: "POMODORO TIMER",
-    //   message: type + " IS DONE!",
-    //   priority: 0,
-    // });
-    // const audio = new Audio("./alarm.wav");
-    // audio.play();
     stopPomodoro();
-    isRunning = STOPPED;
   }
 };
 
@@ -68,7 +87,7 @@ const setAlarmConfig = () => {
 
 // Alarm triger listener to execute a function when ever the alarm is executed
 chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === "POMODORO") {
+  if (alarm.name === "POMODORO" && Notification) {
     chrome.notifications.create("pomodoro", {
       type: "basic",
       iconUrl: "logo-128.png",
@@ -76,8 +95,10 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       message: type + " IS DONE!",
       priority: 0,
     });
-    const audio = new Audio("./alarm.wav");
-    audio.play();
+    if (Alarm) {
+      const audio = new Audio("./alarm.wav");
+      audio.play();
+    }
   }
 });
 
@@ -88,12 +109,14 @@ const startPomodoro = () => {
   } else if (countDown == 0) {
     setTypeDuration(typeDigit);
   }
-  interval = setInterval(tick, 1000);
+  isRunning = RUNNING;
+  interval = setInterval(tick, 100);
 };
 
 // stop function to stop the pomodoro timer
 const stopPomodoro = () => {
   clearInterval(interval);
+  isRunning = STOPPED;
   interval = null;
   chrome.alarms.clear("POMODORO", function () {});
 };
@@ -104,7 +127,7 @@ chrome.runtime.onConnect.addListener(function (port) {
 
   port.onMessage.addListener(function (msg) {
     if (typeof msg.section != "undefined") {
-      isRunning = STOPPED;
+      stopPomodoro();
       typeDigit = msg.section;
       setTypeDuration(typeDigit);
     }
@@ -112,11 +135,10 @@ chrome.runtime.onConnect.addListener(function (port) {
       switch (msg.action) {
         case true:
           startPomodoro();
-          isRunning = RUNNING;
+
           break;
         case false:
           stopPomodoro();
-          isRunning = STOPPED;
           break;
       }
     }
