@@ -22,7 +22,8 @@
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
-    "@mui/material": "^5.2.3",
+    "@mui/icons-material": "^5.2.4",
+    "@mui/material": "^5.2.4",
     "@mui/styles": "^5.2.3",
     "framer-motion": "^5.4.5",
     "prop-types": "^15.7.2",

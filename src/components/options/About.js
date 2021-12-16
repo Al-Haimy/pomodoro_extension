@@ -3,10 +3,16 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import TextArea from "./TextArea";
+import Divider from "@mui/material/Divider";
+import { pink } from "@mui/material/colors";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
 
 const HEADING_ONE = "What is Pomodor techniuqe ?";
 const HEADING_TWO = "What the extension do ?";
-const HEADING_THREE = "About the developer";
+const HEADING_THREE = "Support";
 const BODY_ONE =
   "The Pomodoro Technique is a time management\
    system that encourages people to work with more\
@@ -69,12 +75,25 @@ const About = () => {
           >
             <Grid>
               <TextArea heading={HEADING_ONE} content={BODY_ONE} />
+              <Divider variant="middle" />
             </Grid>
             <Grid>
               <TextArea heading={HEADING_TWO} content={BODY_TWO} />
+              <Divider variant="middle" />
             </Grid>
             <Grid>
               <TextArea heading={HEADING_THREE} content={BODY_THREE} />
+              <Divider variant="middle" />
+            </Grid>
+            <Grid>
+              <Stack direction="row" spacing={4} alignItems="center">
+                <Link sx={{ color: pink[500] }} href="#" underline="none">
+                  <LinkedInIcon fontSize="large" />
+                </Link>
+                <Link sx={{ color: pink[500] }} href="#" underline="none">
+                  <GitHubIcon fontSize="large" />
+                </Link>
+              </Stack>
             </Grid>
           </Grid>
         </Container>
