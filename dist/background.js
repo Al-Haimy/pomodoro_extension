@@ -121,7 +121,7 @@ const startPomodoro = () => {
     setTypeDuration(typeDigit);
   }
   isRunning = RUNNING;
-  interval = setInterval(tick, 100);
+  interval = setInterval(tick, 1000);
 };
 
 // stop function to stop the pomodoro timer
