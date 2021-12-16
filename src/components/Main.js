@@ -5,6 +5,7 @@ import Btn from "./Btn";
 import Grid from "@mui/material/Grid";
 import { useState, useEffect } from "react";
 
+let isBtn = true;
 let timeLift;
 // function to show the times in minutes and secounds
 const timeShow = (time) => {
@@ -17,11 +18,22 @@ const timeShow = (time) => {
   return timeLift;
 };
 
+chrome.storage.sync.get("isButton", (settings) => {
+  isBtn = settings.isButton;
+});
+chrome.storage.onChanged.addListener((settings) => {
+  if (settings.isButton) {
+    isBtn = settings.isButton.newValue;
+    console.log(isBtn);
+  }
+});
 // sound function
 
 const sound = () => {
-  const audio = new Audio("./startBtn.wav");
-  audio.play();
+  if (isBtn) {
+    const audio = new Audio("./startBtn.wav");
+    audio.play();
+  }
 };
 
 const Main = () => {

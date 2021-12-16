@@ -13,13 +13,14 @@ let interval = null;
 let counter = 0;
 let lifeline;
 let typeDigit = 1;
-let Alarm = true;
-let Notifications = false;
+let alarmSound = true;
+let isNotifi = false;
+let btnSound = true;
 
 const setDefaultSettings = () => {
   chrome.storage.sync.set({
-    isAlarm: Alarm,
-    isNotification: Notifications,
+    isAlarm: alarmSound,
+    isNotification: isNotifi,
     isButton: btnSound,
     pomodoro: pomoTime,
     short: shortTime,
@@ -36,8 +37,8 @@ chrome.storage.sync.get(
       pomoTime = settings.pomodoro;
       shortTime = settings.short;
       longTime = settings.long;
-      Alarm = settings.isAlarm;
-      Notifications = settings.isNotification;
+      alarmSound = settings.isAlarm;
+      isNotifi = settings.isNotification;
       setTypeDuration(typeDigit);
     }
   }
@@ -46,7 +47,6 @@ chrome.storage.sync.get(
 chrome.storage.onChanged.addListener(function (settings) {
   if (settings.pomodoro) {
     pomoTime = settings.pomodoro.newValue;
-    console.log(typeof settings.pomodoro.newValue);
     stopPomodoro();
     setTypeDuration(typeDigit);
   }
@@ -61,10 +61,10 @@ chrome.storage.onChanged.addListener(function (settings) {
     setTypeDuration(typeDigit);
   }
   if (settings.isAlarm) {
-    Alarm = settings.isAlarm.newValue;
+    alarmSound = settings.isAlarm.newValue;
   }
   if (settings.isNotification) {
-    Notifications = settings.isNotification.newValue;
+    isNotifi = settings.isNotification.newValue;
   }
 });
 
@@ -75,6 +75,19 @@ const tick = () => {
   }
   if (countDown == 0) {
     stopPomodoro();
+    if (isNotifi) {
+      chrome.notifications.create("pomodoro", {
+        type: "basic",
+        iconUrl: "logo-128.png",
+        title: "POMODORO TIMER",
+        message: type + " IS DONE!",
+        priority: 0,
+      });
+    }
+    if (alarmSound) {
+      const audio = new Audio("./alarm.wav");
+      audio.play();
+    }
   }
 };
 
@@ -86,21 +99,6 @@ const setAlarmConfig = () => {
 };
 
 // Alarm triger listener to execute a function when ever the alarm is executed
-chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === "POMODORO" && Notification) {
-    chrome.notifications.create("pomodoro", {
-      type: "basic",
-      iconUrl: "logo-128.png",
-      title: "POMODORO TIMER",
-      message: type + " IS DONE!",
-      priority: 0,
-    });
-    if (Alarm) {
-      const audio = new Audio("./alarm.wav");
-      audio.play();
-    }
-  }
-});
 
 // start function that to start the pomodoro
 const startPomodoro = () => {
@@ -123,8 +121,6 @@ const stopPomodoro = () => {
 
 // long live message google chrome api
 chrome.runtime.onConnect.addListener(function (port) {
-  console.log(port.name);
-
   port.onMessage.addListener(function (msg) {
     if (typeof msg.section != "undefined") {
       stopPomodoro();

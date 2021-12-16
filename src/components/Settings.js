@@ -36,8 +36,23 @@ const Settings = () => {
   const [shortTime, setShortTime] = useState(0);
   const [longTime, setLongTime] = useState(0);
 
-  const setDefaultSettings = (stng) => {
-    setAlarmSound(stng.isAlarm);
+  const setDefaultSettings = () => {
+    setAlarmSound(true);
+    setNotification(true);
+    setBtnSound(true);
+
+    console.log(notification, "i was clicked");
+    chrome.storage.sync.set({
+      isAlarm: true,
+      isNotification: true,
+      isButton: true,
+      pomodoro: changeToSecounds(25),
+      short: changeToSecounds(5),
+      long: changeToSecounds(15),
+    });
+    setPomoTime(25);
+    setShortTime(5);
+    setLongTime(15);
   };
   chrome.storage.sync.get(
     ["isAlarm", "isNotification", "isButton", "pomodoro", "short", "long"],
@@ -194,8 +209,12 @@ const Settings = () => {
               </Grid>
 
               <Grid item>
-                <ColorButton size="medium" variant="contained">
-                  Submit
+                <ColorButton
+                  onClick={setDefaultSettings}
+                  size="medium"
+                  variant="contained"
+                >
+                  Reset
                 </ColorButton>
               </Grid>
             </Grid>

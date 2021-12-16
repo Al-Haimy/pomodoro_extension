@@ -7,6 +7,7 @@ const MainBody = () => {
     <div className="options_back">
       <OptionHeader />
       <Settings />
+      <About />
     </div>
   );
 };
