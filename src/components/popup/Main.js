@@ -24,7 +24,6 @@ chrome.storage.sync.get("isButton", (settings) => {
 chrome.storage.onChanged.addListener((settings) => {
   if (settings.isButton) {
     isBtn = settings.isButton.newValue;
-    console.log(isBtn);
   }
 });
 // sound function
@@ -53,7 +52,6 @@ const Main = () => {
         setDisplayText(res.section);
         setTimeDisplay(timeShow(res.time));
         !res.status ? setBtnText("start") : setBtnText("stop");
-        console.log(res.time);
       });
     }, 1000);
   }, []);
