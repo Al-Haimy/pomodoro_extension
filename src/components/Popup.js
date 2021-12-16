@@ -1,8 +1,6 @@
 import React from "react";
-import Header from "./Header";
-import Display from "./Display";
 import Box from "@mui/material/Box";
-import Main from "./Main";
+import Main from "./popup/Main";
 const Popup = () => {
   return (
     <Box

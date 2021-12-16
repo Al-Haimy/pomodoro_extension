@@ -1,5 +1,5 @@
 import React from "react";
-import MainBody from "./MainBody";
+import MainBody from "./options/MainBody";
 
 const Options = () => {
   return (
