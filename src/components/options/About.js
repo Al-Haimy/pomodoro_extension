@@ -97,14 +97,22 @@ const About = () => {
             <Grid>
               <TextArea heading="Contact" content=" " />
               <Stack direction="row" spacing={4} alignItems="center">
-                <Link sx={{ color: pink[500] }} href="#" underline="none">
+                <Link
+                  sx={{ color: pink[700] }}
+                  href="https://www.linkedin.com/in/mohammed-al-haimi-21b8a2167/"
+                  underline="none"
+                >
                   <LinkedInIcon
                     sx={{
                       fontSize: 50,
                     }}
                   />
                 </Link>
-                <Link sx={{ color: pink[500] }} href="#" underline="none">
+                <Link
+                  sx={{ color: pink[700] }}
+                  href="https://github.com/Al-Haimy"
+                  underline="none"
+                >
                   <GitHubIcon
                     sx={{
                       fontSize: 50,
@@ -112,7 +120,7 @@ const About = () => {
                   />
                 </Link>
                 <Link
-                  sx={{ color: pink[500] }}
+                  sx={{ color: pink[700] }}
                   href="mailto:mohammed1alhaimi@gmail.com"
                   underline="none"
                 >

@@ -7,6 +7,9 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { useState } from "react";
 
+/*
+Material UI changing the style by adding some Moduls  
+*/
 const GreenSwitch = styled(Switch)(({ theme }) => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
     color: pink[600],
@@ -21,6 +24,9 @@ const GreenSwitch = styled(Switch)(({ theme }) => ({
 const label = { inputProps: { "aria-label": "Switch demo" } };
 
 const SwitchBtn = ({ labelText, onId, isChecked, changeHandler }) => {
+  /**
+  function to handle the switch clicks
+   */
   const switchClick = () => {
     changeHandler(isChecked, onId);
   };

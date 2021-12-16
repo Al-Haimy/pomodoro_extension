@@ -9,6 +9,10 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import { pink } from "@mui/material/colors";
 import { useState } from "react";
+
+/** 
+Styling the bottons with diffretn colors
+*/
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(pink[500]),
   backgroundColor: pink[500],
@@ -19,16 +23,20 @@ const ColorButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+// function to change seconds to minutes
 const changeToMinutes = (secounds) => {
   let minutes = parseInt(secounds / 60) % 60;
   return minutes;
 };
+
+//function to change the seconds to minutes
 const changeToSecounds = (minutes) => {
   let secounds = parseInt(minutes) * 60;
   return secounds;
 };
 
 const Settings = () => {
+  // initialize values into the react
   const [alarmSound, setAlarmSound] = useState(true);
   const [notification, setNotification] = useState(true);
   const [btnSound, setBtnSound] = useState(true);
@@ -36,12 +44,12 @@ const Settings = () => {
   const [shortTime, setShortTime] = useState(0);
   const [longTime, setLongTime] = useState(0);
 
+  // function to reset the settings if
   const setDefaultSettings = () => {
     setAlarmSound(true);
     setNotification(true);
     setBtnSound(true);
 
-    console.log(notification, "i was clicked");
     chrome.storage.sync.set({
       isAlarm: true,
       isNotification: true,
@@ -55,6 +63,8 @@ const Settings = () => {
     setShortTime(5);
     setLongTime(15);
   };
+
+  // function to retrieve what ever in the storage
   chrome.storage.sync.get(
     ["isAlarm", "isNotification", "isButton", "pomodoro", "short", "long"],
     (settings) => {
@@ -67,6 +77,7 @@ const Settings = () => {
     }
   );
 
+  // function to store the new values which has numbers
   const ontimeChange = (time, id) => {
     let seconds;
     seconds = changeToSecounds(time);
@@ -89,6 +100,7 @@ const Settings = () => {
     console.log(id);
   };
 
+  // function to store the switch value
   const handleChange = (state, id) => {
     if (id === "alarm") {
       chrome.storage.sync.set({

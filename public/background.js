@@ -17,6 +17,10 @@ let alarmSound = true;
 let isNotifi = false;
 let btnSound = true;
 
+/**
+function to set the default values in storage
+ */
+
 const setDefaultSettings = () => {
   chrome.storage.sync.set({
     isAlarm: alarmSound,
@@ -27,6 +31,11 @@ const setDefaultSettings = () => {
     long: longTime,
   });
 };
+
+/*
+retreving VAlues from the storage if they are not in place 
+will set the default values
+ */
 
 chrome.storage.sync.get(
   ["isAlarm", "isNotification", "isButton", "pomodoro", "short", "long"],
@@ -43,6 +52,10 @@ chrome.storage.sync.get(
     }
   }
 );
+
+/*
+Adding listener for the storage to chagne the values on real time
+ */
 
 chrome.storage.onChanged.addListener(function (settings) {
   if (settings.pomodoro) {

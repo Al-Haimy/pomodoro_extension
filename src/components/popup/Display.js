@@ -2,7 +2,9 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-
+/**
+Array to store the random text will be diplaied
+ */
 const textArray = [
   "Success is forged in the fire of defeat",
   "Hard work matters",
@@ -20,6 +22,11 @@ const textArray = [
 
 const Display = ({ section, time }) => {
   const [randText, setRandText] = useState("");
+
+  /*
+  make changes when ever the popup opens
+  so every time gives you diffrent string from the array
+  */
   useEffect(() => {
     let rand = Math.floor(Math.random() * (12 - 0)) + 0;
     setRandText(textArray[rand]);
