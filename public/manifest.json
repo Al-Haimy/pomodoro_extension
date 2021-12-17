@@ -1,6 +1,6 @@
 {
     "name": "Pomodor Timer",
-    "description": "Pomodoro technique Helps you wor or study more efficient",
+    "description": "Pomodoro technique Helps you work or study more effectively",
     "version": "1.0",
     "manifest_version": 2,
     "permissions": ["storage",  "notifications"],
