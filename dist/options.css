@@ -17,6 +17,9 @@ body {
   width: 100%;
   background-color: #b91646;
 }
-h2 {
+
+.h2font {
   font-family: "roboto-Medium";
+  font-size: 28px;
+  color: #b91646;
 }

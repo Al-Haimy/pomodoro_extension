@@ -104,20 +104,9 @@ const tick = () => {
   }
 };
 
-// function to set the alarm
-const setAlarmConfig = () => {
-  chrome.alarms.create("POMODORO", {
-    periodInMinutes: parseInt(countDown / 60) % 60,
-  });
-};
-
-// Alarm triger listener to execute a function when ever the alarm is executed
-
 // start function that to start the pomodoro
 const startPomodoro = () => {
-  if (countDown >= 60) {
-    setAlarmConfig();
-  } else if (countDown == 0) {
+  if (countDown == 0) {
     setTypeDuration(typeDigit);
   }
   isRunning = RUNNING;
@@ -129,7 +118,6 @@ const stopPomodoro = () => {
   clearInterval(interval);
   isRunning = STOPPED;
   interval = null;
-  chrome.alarms.clear("POMODORO", function () {});
 };
 
 // long live message google chrome api

@@ -71,8 +71,8 @@ const About = () => {
             backgroundColor: "#FBF3E4",
             borderRadius: 0.5,
             paddingBottom: 2,
-            paddingLeft: 3,
-            paddingRight: 3,
+            paddingLeft: 5,
+            paddingRight: 5,
           }}
           maxWidth="xl"
         >

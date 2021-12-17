@@ -32,6 +32,7 @@ const OptionHeader = () => {
         </Grid>
         <Grid>
           <motion.h2
+            className="h2font"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, rotate: [0, 5, 0, -5, 0] }}
             transition={{
@@ -40,7 +41,7 @@ const OptionHeader = () => {
               default: { duration: 1 },
             }}
           >
-            ALHAIMI: POMODORO TIMER
+            POMODORO TIMER
           </motion.h2>
         </Grid>
       </Grid>

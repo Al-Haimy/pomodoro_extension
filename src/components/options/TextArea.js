@@ -5,7 +5,7 @@ const TextArea = ({ content, heading }) => {
   return (
     <Stack
       sx={{
-        marginTop: 3,
+        padding: 4,
       }}
     >
       <Typography

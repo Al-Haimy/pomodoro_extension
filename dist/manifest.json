@@ -1,6 +1,6 @@
 {
-    "name": "Pomodor technique",
-    "description": "The Pomodoro Technique is a time management system that encourages people to work with more efficiny",
+    "name": "Pomodor Timer",
+    "description": "Pomodoro technique Helps you wor or study more efficient",
     "version": "1.0",
     "manifest_version": 2,
     "permissions": ["storage",  "notifications"],
